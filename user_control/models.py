@@ -1,3 +1,4 @@
+from random import choices
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser,PermissionsMixin,BaseUserManager
 
@@ -36,8 +37,6 @@ class DateAbstract(models.Model):
 
 
 class CustomUser(AbstractBaseUser,PermissionsMixin,DateAbstract):
-    firt_name = models.CharField(max_length=100)
-    last_name = models.CharField(max_length=100)
     is_staff = models.BooleanField(default=False)
     email = models.EmailField(unique=True)
 
@@ -47,3 +46,39 @@ class CustomUser(AbstractBaseUser,PermissionsMixin,DateAbstract):
 
     def __str__(self):
         return self.email
+
+
+
+class UserProfile(DateAbstract):
+    user = models.OneToOneField(CustomUser,related_name="user_profile",on_delete=models.CASCADE)
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    gender = models.CharField(max_length=6,choices=(("male","male"),("female","female")))
+    dob = models.DateField()
+    phone = models.PositiveIntegerField()
+    city = models.CharField(max_length=100)
+    region = models.CharField(max_length=100)
+    address = models.TextField()
+
+
+    def __str__(self):
+        return self.user.email
+
+
+
+class Student(DateAbstract):
+    about = models.TextField()
+    user = models.CharField(max_length=50,unique=True)
+    user = models.OneToOneField(CustomUser,related_name="student_profile",on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.user.email
+
+class Teacher(DateAbstract):
+    about = models.TextField()
+    user = models.OneToOneField(CustomUser,related_name="teacher_profile",on_delete=models.CASCADE)
+    qualification = models.CharField(max_length=4,choices=(("BSC","BSC"),("MSC","MSC"),("PHD","PHD")))
+    yoe = models.PositiveSmallIntegerField()
+
+    def __str__(self):
+        return self.user.email
