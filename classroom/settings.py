@@ -137,3 +137,12 @@ CLOUDINARY_STORAGE = {
     'API_KEY':config("API_KEY"),
     'API_SECRET':config("API_SECRET")
 }
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+
+}
