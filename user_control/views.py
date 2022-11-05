@@ -1,6 +1,6 @@
 from unittest import result
 from rest_framework.viewsets import ModelViewSet
-from .serializers import CustomUser,UserSerializer,CreateUserSerializer
+from .serializers import CustomUser,UserSerializer,CreateUserSerializer,UserProfile,UserProfileSerializer
 from rest_framework.response import Response
 from rest_framework import status
 
@@ -20,9 +20,6 @@ class UserViewSet(ModelViewSet):
         request_serialized = self.get_serializer(data=request.data)
         request_serialized.is_valid(raise_exception=True)
 
-        
-
-
         email = request_serialized.validated_data["email"]
         password = request_serialized.validated_data["password"]
 
@@ -32,3 +29,6 @@ class UserViewSet(ModelViewSet):
 
         return Response(result,status=status.HTTP_201_CREATED)
 
+class UserProfileViewSet(ModelViewSet):
+    serializer_class = UserProfileSerializer
+    queryset = UserProfile.objects.all()
